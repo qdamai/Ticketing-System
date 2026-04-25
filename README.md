@@ -1,6 +1,21 @@
 <div align="center">
-  <h1>🚀 DameDesk: Enterprise Ticketing System</h1>
-  <p>Sistem helpdesk modern dengan manajemen peran, pelacakan SLA, real-time chat, dan analitik dashboard. Dirancang untuk kecepatan, efisiensi, dan keamanan skala Enterprise.</p>
+
+  # ☄️ DameDesk ☄️
+  ### *The Ultimate Enterprise Ticketing System*
+
+  <p align="center">
+    <b>Sistem helpdesk super modern untuk tim masa kini.</b><br/>
+    Ditenagai oleh AI, dirancang untuk <i>kecepatan, efisiensi, dan keamanan skala Enterprise.</i>
+  </p>
+
+  <p align="center">
+    <img src="https://img.shields.io/badge/Vue%203-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white" alt="Vue 3" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+    <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase" />
+    <img src="https://img.shields.io/badge/Gemini_AI-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white" alt="Gemini AI" />
+  </p>
+  
+  <br/>
 </div>
 
 ---
