@@ -5,18 +5,18 @@
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
-*   **⏱️ SLA Timer & Tracking:** Memastikan setiap keluhan pelanggan ditangani sesuai dengan batas waktu Service Level Agreement (SLA). Indikator warna dinamis untuk tiket yang mendekati batas waktu.
-*   **🤖 AI Smart Summarizer:** Integrasi dengan Google Gemini AI untuk merangkum deskripsi tiket yang panjang menjadi satu kalimat padat, menghemat waktu Admin dalam membaca masalah.
-*   **🔒 Role-Based Access Control (RBAC):** Sistem manajemen peran yang tegas antara Admin (memproses tiket) dan User (membuat tiket), dengan perlindungan *route* di sisi frontend dan backend (Firestore Rules).
-*   **💬 Real-time Chat System:** Komunikasi instan antara Admin dan User dalam memecahkan masalah tiket tanpa perlu me-refresh halaman.
-*   **📝 Internal Notes:** Ruang diskusi rahasia khusus sesama Admin di dalam tiket yang tidak dapat dilihat oleh User.
-*   **📊 Advanced Analytics Dashboard:** Visualisasi data menggunakan Chart.js untuk memantau performa departemen, distribusi masalah, dan statistik penyelesaian tiket.
-*   **📁 Secure Media Uploads:** Mendukung unggahan gambar dan dokumen bukti melalui integrasi Cloudinary dengan *progress bar* real-time.
-*   **🌓 Elegant Dark Mode:** Pengalaman UI yang nyaman di mata dengan mode gelap otomatis dan kustomisasi sakelar tema manual.
-*   **🕵️‍♂️ Audit Trail / Timeline:** Transparansi penuh dengan log aktivitas yang mencatat setiap aksi pada tiket (pembuatan, perubahan status, eskalasi).
-*   **🔔 Browser Push Notifications:** Memberi tahu Admin dan User secara instan ketika ada pembaruan tiket, meskipun *tab* browser sedang tidak aktif.
+- **SLA Timer & Tracking** — Memastikan setiap keluhan pelanggan ditangani sesuai dengan batas waktu Service Level Agreement (SLA). Indikator warna dinamis untuk tiket yang mendekati batas waktu.
+- **AI Smart Summarizer** — Integrasi dengan Google Gemini AI untuk merangkum deskripsi tiket yang panjang menjadi satu kalimat padat, menghemat waktu Admin dalam membaca masalah.
+- **Role-Based Access Control (RBAC)** — Sistem manajemen peran yang tegas antara Admin (memproses tiket) dan User (membuat tiket), dengan perlindungan *route* di sisi frontend dan backend (Firestore Rules).
+- **Real-time Chat System** — Komunikasi instan antara Admin dan User dalam memecahkan masalah tiket tanpa perlu me-refresh halaman.
+- **Internal Notes** — Ruang diskusi rahasia khusus sesama Admin di dalam tiket yang tidak dapat dilihat oleh User.
+- **Advanced Analytics Dashboard** — Visualisasi data menggunakan Chart.js untuk memantau performa departemen, distribusi masalah, dan statistik penyelesaian tiket.
+- **Secure Media Uploads** — Mendukung unggahan gambar dan dokumen bukti melalui integrasi Cloudinary dengan *progress bar* real-time.
+- **Elegant Dark Mode** — Pengalaman UI yang nyaman di mata dengan mode gelap otomatis dan kustomisasi sakelar tema manual.
+- **Audit Trail & Timeline** — Transparansi penuh dengan log aktivitas yang mencatat setiap aksi pada tiket (pembuatan, perubahan status, eskalasi).
+- **Browser Push Notifications** — Memberi tahu Admin dan User secara instan ketika ada pembaruan tiket, meskipun *tab* browser sedang tidak aktif.
 
 ---
 
@@ -34,19 +34,7 @@
 
 ---
 
-## 📸 Preview Screenshots
 
-> *(Screenshot placeholders - Tambahkan gambar asli setelah deploy)*
-
-| User Dashboard (Light Mode) | Admin Console (Dark Mode) |
-| :---: | :---: |
-| ![User Dashboard](https://via.placeholder.com/600x350.png?text=User+Dashboard) | ![Admin Analytics](https://via.placeholder.com/600x350.png?text=Admin+Analytics) |
-
-| Smart AI Summarizer & Audit Trail | Real-time Chat & Media Upload |
-| :---: | :---: |
-| ![Ticket Detail](https://via.placeholder.com/600x350.png?text=Ticket+Detail+View) | ![Chat Box](https://via.placeholder.com/600x350.png?text=Real-time+Chat) |
-
----
 
 ## 📂 Project Structure
 
