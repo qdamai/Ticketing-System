@@ -154,26 +154,28 @@
                     <span :class="statusBadge(ticket.status)" class="px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
                       {{ ticket.status }}
                     </span>
-                    <span class="px-3 py-1.5 bg-slate-100 dark:bg-slate-900 text-slate-500 text-[10px] font-black uppercase tracking-widest rounded-full border border-slate-200 dark:border-slate-700">
+                    <span class="hidden md:inline-block px-3 py-1.5 bg-slate-100 dark:bg-slate-900 text-slate-500 text-[10px] font-black uppercase tracking-widest rounded-full border border-slate-200 dark:border-slate-700">
                       {{ ticket.department || 'General' }}
                     </span>
                     <!-- SLA Timer Component -->
-                    <TicketTimer :createdAt="ticket.createdAt" :status="ticket.status" />
+                    <div class="hidden md:block">
+                      <TicketTimer :createdAt="ticket.createdAt" :status="ticket.status" />
+                    </div>
                   </div>
-                  <div class="flex items-center space-x-2 text-slate-400">
+                  <div class="hidden md:flex items-center space-x-2 text-slate-400">
                     <span class="text-[10px] font-bold">{{ formatDate(ticket.createdAt) }}</span>
                   </div>
                 </div>
 
                 <div class="mb-6">
                   <div class="flex items-center space-x-2 mb-1">
-                    <span :class="priorityBadge(ticket.priority)" class="text-[9px] font-black uppercase tracking-tighter">{{ ticket.priority || 'Normal' }}</span>
+                    <span :class="priorityBadge(ticket.priority)" class="hidden md:inline-block text-[9px] font-black uppercase tracking-tighter">{{ ticket.priority || 'Normal' }}</span>
                     <h3 class="text-xl font-black text-slate-900 dark:text-white leading-tight group-hover:text-emerald-600 transition-colors">{{ ticket.title }}</h3>
                   </div>
-                  <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed line-clamp-1">{{ ticket.description }}</p>
+                  <p class="hidden md:block text-slate-500 dark:text-slate-400 text-sm leading-relaxed line-clamp-1">{{ ticket.description }}</p>
                   
                   <!-- AI Summary Badge -->
-                  <div v-if="ticket.aiSummary && authStore.isAdmin" class="mt-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl border border-emerald-100 dark:border-emerald-800/50 flex items-start space-x-3">
+                  <div v-if="ticket.aiSummary && authStore.isAdmin" class="hidden md:flex mt-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl border border-emerald-100 dark:border-emerald-800/50 items-start space-x-3">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
@@ -181,7 +183,7 @@
                   </div>
                 </div>
 
-                <div class="flex items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-700">
+                <div class="hidden md:flex items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-700">
                   <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-900 flex items-center justify-center text-slate-400 font-black border border-slate-200 dark:border-slate-800">
                       {{ ticket.userName?.charAt(0) || 'U' }}
