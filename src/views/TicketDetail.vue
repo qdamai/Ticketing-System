@@ -101,9 +101,33 @@
           </div>
         </div>
 
-        <!-- Chat Area -->
-        <div class="lg:col-span-2">
-          <ChatBox :ticket-id="ticket.id" />
+        <!-- Chat & Timeline Area -->
+        <div class="lg:col-span-2 flex flex-col h-[800px]">
+          <!-- Tabs -->
+          <div class="flex space-x-1 mb-4 p-1 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm shrink-0">
+            <button @click="activeTab = 'chat'" 
+              :class="activeTab === 'chat' ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 font-black' : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
+              class="flex-1 py-3 px-4 rounded-xl text-xs uppercase tracking-widest transition-all flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+              Live Chat
+            </button>
+            <button @click="activeTab = 'timeline'" 
+              :class="activeTab === 'timeline' ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 font-black' : 'text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700/50'"
+              class="flex-1 py-3 px-4 rounded-xl text-xs uppercase tracking-widest transition-all flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Audit Trail
+            </button>
+          </div>
+
+          <!-- Tab Content -->
+          <div class="flex-1 overflow-y-auto">
+            <ChatBox v-if="activeTab === 'chat'" :ticket-id="ticket.id" class="h-full" />
+            <TicketTimeline v-else :ticket-id="ticket.id" />
+          </div>
         </div>
       </div>
     </main>
@@ -127,6 +151,7 @@ import ChatBox from '../components/ChatBox.vue'
 import TicketTimer from '../components/TicketTimer.vue'
 import InternalNotes from '../components/InternalNotes.vue'
 import RatingModal from '../components/RatingModal.vue'
+import TicketTimeline from '../components/TicketTimeline.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -136,6 +161,7 @@ const ticket = ref(null)
 const loading = ref(true)
 const ownerStatus = ref({ isOnline: false, lastSeen: null })
 const showRatingModal = ref(false)
+const activeTab = ref('chat')
 
 let ticketUnsubscribe = null
 let ownerUnsubscribe = null
@@ -190,6 +216,12 @@ const markAsResolved = async () => {
       resolvedAt: new Date().toISOString()
     })
     ticket.value.status = 'Resolved'
+
+    // Log Activity
+    import('../services/logger').then(({ logTicketActivity }) => {
+      logTicketActivity(ticket.value.id, 'Mengubah status menjadi Resolved', 'status')
+    })
+
     alert('Tiket berhasil diselesaikan!')
   } catch (error) {
     alert('Gagal update status: ' + error.message)

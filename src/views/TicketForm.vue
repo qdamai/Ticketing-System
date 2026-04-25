@@ -138,14 +138,10 @@ import { useAuthStore } from '../stores/auth'
 import { db } from '../services/firebase'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
 import { uploadFile } from '../services/storage'
-import { GoogleGenerativeAI } from '@google/generative-ai'
+import { generateTicketSummary } from '../services/gemini'
 
 const router = useRouter()
 const authStore = useAuthStore()
-
-// Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY)
-const model = genAI.getGenerativeModel({ model: "gemini-pro" })
 
 const form = reactive({
   title: '',
@@ -196,15 +192,7 @@ const handleSubmit = async () => {
   
   try {
     // 1. Generate AI Summary directly on Frontend
-    try {
-      const prompt = `Anda adalah asisten helpdesk profesional. Ringkas masalah tiket berikut dalam maksimal 1 kalimat yang sangat padat untuk admin. Tiket: "${form.title} - ${form.description}"`;
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      aiSummary = response.text();
-    } catch (aiError) {
-      console.warn("Gemini Error:", aiError);
-      aiSummary = "Gagal memproses ringkasan otomatis.";
-    }
+    aiSummary = await generateTicketSummary(form.title, form.description)
 
     // 2. Upload File
     if (selectedFile.value) {
@@ -217,7 +205,7 @@ const handleSubmit = async () => {
     }
 
     // 3. Save to Firestore
-    await addDoc(collection(db, 'tickets'), {
+    const docRef = await addDoc(collection(db, 'tickets'), {
       ...form,
       fileUrl,
       aiSummary, // Save the generated summary
@@ -225,6 +213,11 @@ const handleSubmit = async () => {
       userName: authStore.displayName,
       status: 'Open',
       createdAt: serverTimestamp()
+    })
+
+    // Log Activity
+    import('../services/logger').then(({ logTicketActivity }) => {
+      logTicketActivity(docRef.id, 'Membuat tiket baru', 'create')
     })
 
     alert('Tiket berhasil dibuat!')

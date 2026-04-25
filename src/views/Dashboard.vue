@@ -102,6 +102,35 @@
               </div>
             </div>
           </div>
+
+          <!-- Global Activity Feed (Admin Only) -->
+          <div v-if="authStore.isAdmin" class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
+            <h3 class="text-xs font-black text-slate-900 dark:text-white uppercase tracking-widest mb-4">Activity Feed</h3>
+            <div v-if="globalLogs.length === 0" class="text-center py-4">
+              <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Belum ada aktivitas</p>
+            </div>
+            <div v-else class="space-y-4">
+              <div v-for="log in globalLogs" :key="log.id" class="flex items-start space-x-3">
+                <div class="mt-0.5">
+                  <svg v-if="log.type === 'create'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                  <svg v-else-if="log.type === 'status'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  <svg v-else xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-[10px] font-bold text-slate-700 dark:text-slate-300 leading-tight">
+                    <span class="text-emerald-600 dark:text-emerald-500">{{ log.actor }}</span> {{ log.action }}
+                  </p>
+                  <p class="text-[9px] font-bold text-slate-400 mt-0.5 uppercase tracking-tighter">{{ formatDate(log.createdAt) }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Main Content -->
@@ -186,11 +215,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { db } from '../services/firebase'
-import { collection, query, where, orderBy, onSnapshot, deleteDoc, doc } from 'firebase/firestore'
+import { collection, query, where, orderBy, onSnapshot, deleteDoc, doc, collectionGroup, limit } from 'firebase/firestore'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 import TicketTimer from '../components/TicketTimer.vue'
 
@@ -203,6 +232,7 @@ const searchQuery = ref('')
 const filterDept = ref('All')
 const filterStatus = ref('All')
 const sortBy = ref('newest')
+const globalLogs = ref([]) // State untuk Global Activity Feed
 
 const priorityScore = { 'High': 3, 'Medium': 2, 'Normal': 1, undefined: 1 }
 
@@ -246,6 +276,21 @@ const calculateOverdue = () => {
 }
 
 let unsubscribe = null
+let logsUnsubscribe = null
+
+const fetchGlobalLogs = () => {
+  if (!authStore.isAdmin) return
+  const q = query(
+    collectionGroup(db, 'logs'),
+    orderBy('createdAt', 'desc'),
+    limit(5)
+  )
+  logsUnsubscribe = onSnapshot(q, (snapshot) => {
+    globalLogs.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+  }, (error) => {
+    console.warn('Global logs require an index. Activity feed hidden until created.', error)
+  })
+}
 
 const fetchTickets = () => {
   loading.value = true
@@ -304,7 +349,15 @@ const formatDate = (ts) => {
   return new Intl.DateTimeFormat('id-ID', { dateStyle: 'medium', timeStyle: 'short' }).format(date)
 }
 
-onMounted(() => fetchTickets())
+onMounted(() => {
+  fetchTickets()
+  fetchGlobalLogs()
+})
+
+onUnmounted(() => {
+  if (unsubscribe) unsubscribe()
+  if (logsUnsubscribe) logsUnsubscribe()
+})
 </script>
 
 <style scoped>

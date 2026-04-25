@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Fungsi bantuan
+    function isAdmin() {
+      return request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // 1. Izinkan Admin melakukan apa saja di semua path
+    match /{document=**} {
+      allow read, write: if isAdmin();
+    }
+    
+    // 2. Koleksi Users
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      // Membaca profil dasar pengguna lain kadang dibutuhkan (misal nama di chat)
+      allow read: if request.auth != null;
+    }
+
+    // 3. Koleksi Tickets dan Subkoleksinya
+    match /tickets/{ticketId} {
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+      allow create: if request.auth != null;
+
+      // Akses ke subkoleksi (seperti messages, logs)
+      match /{subcollection}/{docId} {
+        // Customer hanya bisa baca/tulis subkoleksi di tiket miliknya
+        allow read, write: if request.auth != null && 
+          get(/databases/$(database)/documents/tickets/$(ticketId)).data.userId == request.auth.uid;
+      }
+    }
+  }
+}
