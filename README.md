@@ -100,8 +100,8 @@ damedesk-app/
 
 1.  **Clone Repository**
     ```bash
-    git clone https://github.com/username/DameDesk.git
-    cd DameDesk
+    git clone https://github.com/qdamai/Ticketing-System.git
+    cd Ticketing-System
     ```
 
 2.  **Install Dependencies**
