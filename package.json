@@ -1,6 +1,9 @@
 {
   "name": "damedesk-app",
   "version": "1.0.0",
+  "description": "Enterprise Ticketing & Helpdesk System with PWA, SLA Tracking, and Gemini AI integration.",
+  "keywords": ["helpdesk", "ticketing-system", "pwa", "vue3", "firebase", "gemini-ai", "tailwind-css", "sla-tracking", "enterprise", "customer-support"],
+  "homepage": "https://dameydesk.netlify.app/",
   "type": "module",
   "scripts": {
     "dev": "vite",

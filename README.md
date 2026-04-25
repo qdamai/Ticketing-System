@@ -14,6 +14,10 @@
     <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase" />
     <img src="https://img.shields.io/badge/Gemini_AI-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white" alt="Gemini AI" />
   </p>
+
+  <p align="center">
+    <b>🚀 Live Demo:</b> <a href="https://dameydesk.netlify.app/">https://dameydesk.netlify.app/</a>
+  </p>
   
   <br/>
 </div>
